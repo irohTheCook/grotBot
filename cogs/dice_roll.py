@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 from random import randint
 
@@ -21,17 +22,29 @@ class DiceRoll(commands.Cog):
             for _ in range(number):
                 rolls.append(randint(1, 6))
             rolls.sort()
-            msg = "You'z rolled: "
 
+            result = ""
             prev = None
             for roll in rolls:
                 if prev != roll:
-                    msg += '\n'
-                msg += self.emoji_d6[roll]
+                    result += '\n'
+                result += self.emoji_d6[roll]
                 prev = roll
-            await ctx.send(msg)
+
+            pos_embd = discord.Embed(
+                title="You'z rolled...",
+                description=result,
+                colour=discord.Colour(0xffffff),
+            )
+            await ctx.send(embed=pos_embd)
+
         else:
-            await ctx.send("I haz 60 dice, no more, no less.")
+            neg_embd1 = discord.Embed(
+                title="Oi! I only haz 60 die you plonk!",
+                colour=discord.Colour(0x000000),
+            )
+            neg_embd1.set_image(url="https://i.imgur.com/GB9qLol.png")
+            await ctx.send(embed=neg_embd1)
 
 
 def setup(client):
